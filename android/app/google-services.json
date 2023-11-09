@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "624490101339",
+    "project_id": "bds1-e3485",
+    "storage_bucket": "bds1-e3485.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624490101339:android:df1d39a82180ce97325d7e",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe6MyrKmCqqwMeKCTu5uMgPdw_CBtauew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624490101339:android:298080a323b5acff325d7e",
+        "android_client_info": {
+          "package_name": "com.mycompany.bdsform"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe6MyrKmCqqwMeKCTu5uMgPdw_CBtauew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
