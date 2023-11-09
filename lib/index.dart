@@ -5,3 +5,4 @@ export '/authentication/phone_number/phone_number_widget.dart'
 export '/request_form/request_form_widget.dart' show RequestFormWidget;
 export '/confirmation_page/confirmation_page_widget.dart'
     show ConfirmationPageWidget;
+export '/splash/splash_widget.dart' show SplashWidget;

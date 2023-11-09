@@ -100,6 +100,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'ConfirmationPage',
           path: '/confirmationPage',
           builder: (context, params) => const ConfirmationPageWidget(),
+        ),
+        FFRoute(
+          name: 'Splash',
+          path: '/splash',
+          builder: (context, params) => const SplashWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
