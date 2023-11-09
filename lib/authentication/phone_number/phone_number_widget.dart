@@ -429,7 +429,8 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
                           },
                           child: FFButtonWidget(
                             onPressed: () async {
-                              final phoneNumberVal = FFAppState().MobileNumber;
+                              final phoneNumberVal =
+                                  _model.numberController.text;
                               if (phoneNumberVal.isEmpty ||
                                   !phoneNumberVal.startsWith('+')) {
                                 ScaffoldMessenger.of(context).showSnackBar(
