@@ -141,7 +141,7 @@ class _VerifyOtpWidgetState extends State<VerifyOtpWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 5.0, 2.0, 4.0, 4.0),
                             child: Text(
-                              FFAppState().PhoneNumber,
+                              FFAppState().MobileNumber,
                               style: FlutterFlowTheme.of(context).bodyMedium,
                             ),
                           ),
@@ -332,7 +332,8 @@ class _VerifyOtpWidgetState extends State<VerifyOtpWidget> {
                             opacity: 0.8,
                             child: FFButtonWidget(
                               onPressed: () async {
-                                final phoneNumberVal = FFAppState().PhoneNumber;
+                                final phoneNumberVal =
+                                    FFAppState().MobileNumber;
                                 if (phoneNumberVal.isEmpty ||
                                     !phoneNumberVal.startsWith('+')) {
                                   ScaffoldMessenger.of(context).showSnackBar(

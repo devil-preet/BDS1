@@ -422,12 +422,14 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
                           hoverColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onLongPress: () async {
-                            context.pushNamed('RequestForm');
+                            setState(() {
+                              FFAppState().MobileNumber =
+                                  '+91${_model.numberController.text}';
+                            });
                           },
                           child: FFButtonWidget(
                             onPressed: () async {
-                              final phoneNumberVal =
-                                  '+91${_model.numberController.text}';
+                              final phoneNumberVal = FFAppState().MobileNumber;
                               if (phoneNumberVal.isEmpty ||
                                   !phoneNumberVal.startsWith('+')) {
                                 ScaffoldMessenger.of(context).showSnackBar(

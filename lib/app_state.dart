@@ -22,10 +22,10 @@ class FFAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _PhoneNumber = '';
-  String get PhoneNumber => _PhoneNumber;
-  set PhoneNumber(String value) {
-    _PhoneNumber = value;
+  String _MobileNumber = '';
+  String get MobileNumber => _MobileNumber;
+  set MobileNumber(String value) {
+    _MobileNumber = value;
   }
 }
 
