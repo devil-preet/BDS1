@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
@@ -61,12 +62,40 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
     super.initState();
     _model = createModel(context, () => PhoneNumberModel());
 
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        FFAppState().MobileNumber = '+91${_model.numberController.text}';
+      });
+      final phoneNumberVal = FFAppState().MobileNumber;
+      if (phoneNumberVal.isEmpty ||
+          !phoneNumberVal.startsWith('+')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Phone Number is required and has to start with +.'),
+          ),
+        );
+        return;
+      }
+      await authManager.beginPhoneAuth(
+        context: context,
+        phoneNumber: phoneNumberVal,
+        onCodeSent: (context) async {
+          context.goNamedAuth(
+            'verify_otp',
+            context.mounted,
+            ignoreRedirect: true,
+          );
+        },
+      );
+    });
+
+    authManager.handlePhoneAuthStateChanges(context);
     _model.textController1 ??= TextEditingController(text: 'India (+91)');
 
     _model.numberController ??= TextEditingController();
     _model.numberFocusNode ??= FocusNode();
     _model.numberFocusNode!.addListener(() => setState(() {}));
-    authManager.handlePhoneAuthStateChanges(context);
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -369,7 +398,7 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
                                           () => setState(() {}),
                                         ),
                                         textCapitalization:
-                                            TextCapitalization.words,
+                                            TextCapitalization.none,
                                         obscureText: false,
                                         decoration: InputDecoration(
                                           labelStyle:
@@ -390,6 +419,14 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
                                         ),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium,
+                                        maxLength: 13,
+                                        maxLengthEnforcement:
+                                            MaxLengthEnforcement.enforced,
+                                        buildCounter: (context,
+                                                {required currentLength,
+                                                required isFocused,
+                                                maxLength}) =>
+                                            null,
                                         keyboardType: TextInputType.phone,
                                         cursorColor:
                                             FlutterFlowTheme.of(context)
@@ -397,10 +434,6 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
                                         validator: _model
                                             .numberControllerValidator
                                             .asValidator(context),
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp('[a-zA-Z0-9]'))
-                                        ],
                                       ),
                                     ),
                                   ),
@@ -422,36 +455,14 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
                           hoverColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onLongPress: () async {
-                            setState(() {
+                            FFAppState().update(() {
                               FFAppState().MobileNumber =
                                   '+91${_model.numberController.text}';
                             });
                           },
                           child: FFButtonWidget(
-                            onPressed: () async {
-                              final phoneNumberVal =
-                                  _model.numberController.text;
-                              if (phoneNumberVal.isEmpty ||
-                                  !phoneNumberVal.startsWith('+')) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        'Phone Number is required and has to start with +.'),
-                                  ),
-                                );
-                                return;
-                              }
-                              await authManager.beginPhoneAuth(
-                                context: context,
-                                phoneNumber: phoneNumberVal,
-                                onCodeSent: (context) async {
-                                  context.goNamedAuth(
-                                    'verify_otp',
-                                    context.mounted,
-                                    ignoreRedirect: true,
-                                  );
-                                },
-                              );
+                            onPressed: () {
+                              print('Button pressed ...');
                             },
                             text: 'Get OTP',
                             options: FFButtonOptions(

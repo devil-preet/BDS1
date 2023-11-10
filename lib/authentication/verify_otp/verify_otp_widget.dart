@@ -210,10 +210,63 @@ class _VerifyOtpWidgetState extends State<VerifyOtpWidget> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        if (_model.timerMilliseconds == 0)
+                          Opacity(
+                            opacity: 0.8,
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                final phoneNumberVal =
+                                    FFAppState().MobileNumber;
+                                if (phoneNumberVal.isEmpty ||
+                                    !phoneNumberVal.startsWith('+')) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Phone Number is required and has to start with +.'),
+                                    ),
+                                  );
+                                  return;
+                                }
+                                await authManager.beginPhoneAuth(
+                                  context: context,
+                                  phoneNumber: phoneNumberVal,
+                                  onCodeSent: (context) async {
+                                    context.goNamedAuth(
+                                      'verify_otp',
+                                      context.mounted,
+                                      ignoreRedirect: true,
+                                    );
+                                  },
+                                );
+                              },
+                              text: 'Resend OTP',
+                              options: FFButtonOptions(
+                                width: 100.0,
+                                height: 20.0,
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    14.0, 0.0, 14.0, 0.0),
+                                iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      color: Colors.white,
+                                    ),
+                                elevation: 3.0,
+                                borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          ),
                         Align(
                           alignment: const AlignmentDirectional(0.00, 0.00),
                           child: Text(
-                            'OTP can be resent in ',
+                            ' in ',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -313,76 +366,11 @@ class _VerifyOtpWidgetState extends State<VerifyOtpWidget> {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: const AlignmentDirectional(1.00, 0.00),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: const AlignmentDirectional(-1.00, 0.00),
-                          child: Text(
-                            'Didn\'t get the code?',
-                            style: FlutterFlowTheme.of(context).bodyMedium,
-                          ),
-                        ),
-                        if (_model.timerMilliseconds == 0)
-                          Opacity(
-                            opacity: 0.8,
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                final phoneNumberVal =
-                                    FFAppState().MobileNumber;
-                                if (phoneNumberVal.isEmpty ||
-                                    !phoneNumberVal.startsWith('+')) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Phone Number is required and has to start with +.'),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                await authManager.beginPhoneAuth(
-                                  context: context,
-                                  phoneNumber: phoneNumberVal,
-                                  onCodeSent: (context) async {
-                                    context.goNamedAuth(
-                                      'verify_otp',
-                                      context.mounted,
-                                      ignoreRedirect: true,
-                                    );
-                                  },
-                                );
-                              },
-                              text: 'Click Here',
-                              options: FFButtonOptions(
-                                width: 90.0,
-                                height: 20.0,
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    14.0, 0.0, 14.0, 0.0),
-                                iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 0.0),
-                                color: FlutterFlowTheme.of(context).primary,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .titleSmall
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      color: Colors.white,
-                                    ),
-                                elevation: 3.0,
-                                borderSide: const BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                            ),
-                          ),
-                      ]
-                          .divide(const SizedBox(width: 15.0))
-                          .addToEnd(const SizedBox(width: 20.0)),
+                  Container(
+                    width: 5.0,
+                    height: 0.0,
+                    decoration: const BoxDecoration(
+                      color: Colors.transparent,
                     ),
                   ),
                 ].divide(const SizedBox(height: 20.0)),

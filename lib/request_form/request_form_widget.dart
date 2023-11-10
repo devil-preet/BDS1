@@ -1,4 +1,3 @@
-import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_place_picker.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -129,14 +128,7 @@ class _RequestFormWidgetState extends State<RequestFormWidget> {
                               child: TextFormField(
                                 controller: _model.patientNameController,
                                 focusNode: _model.patientNameFocusNode,
-                                onFieldSubmitted: (_) async {
-                                  await UsersRecord.collection
-                                      .doc()
-                                      .set(createUsersRecordData(
-                                        patientName:
-                                            _model.patientNameController.text,
-                                      ));
-                                },
+                                onFieldSubmitted: (_) async {},
                                 autofocus: true,
                                 textCapitalization: TextCapitalization.words,
                                 obscureText: false,
@@ -236,16 +228,8 @@ class _RequestFormWidgetState extends State<RequestFormWidget> {
                                         'B--Negative',
                                         'AB--Negative'
                                       ],
-                                      onChanged: (val) async {
-                                        setState(
-                                            () => _model.bloodGroupValue = val);
-                                        await UsersRecord.collection
-                                            .doc()
-                                            .set(createUsersRecordData(
-                                              bloodGroup:
-                                                  _model.bloodGroupValue,
-                                            ));
-                                      },
+                                      onChanged: (val) => setState(
+                                          () => _model.bloodGroupValue = val),
                                       width: 180.0,
                                       height: 40.0,
                                       textStyle: FlutterFlowTheme.of(context)
@@ -313,15 +297,8 @@ class _RequestFormWidgetState extends State<RequestFormWidget> {
                                         'Platelet',
                                         'Plasma'
                                       ],
-                                      onChanged: (val) async {
-                                        setState(
-                                            () => _model.bloodTypeValue = val);
-                                        await UsersRecord.collection
-                                            .doc()
-                                            .set(createUsersRecordData(
-                                              bloodType: _model.bloodTypeValue,
-                                            ));
-                                      },
+                                      onChanged: (val) => setState(
+                                          () => _model.bloodTypeValue = val),
                                       width: 180.0,
                                       height: 40.0,
                                       textStyle: FlutterFlowTheme.of(context)
@@ -475,14 +452,7 @@ class _RequestFormWidgetState extends State<RequestFormWidget> {
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      await UsersRecord.collection
-                                          .doc()
-                                          .set(createUsersRecordData(
-                                            deadline:
-                                                _model.datePicked?.toString(),
-                                          ));
-                                    },
+                                    onTap: () async {},
                                     child: Text(
                                       dateTimeFormat(
                                           'd/M h:mm a', _model.datePicked),
@@ -576,16 +546,7 @@ class _RequestFormWidgetState extends State<RequestFormWidget> {
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      await UsersRecord.collection
-                                          .doc()
-                                          .set(createUsersRecordData(
-                                            location: _model
-                                                .locationPickerValue.address,
-                                            latLang: _model
-                                                .locationPickerValue.latLng,
-                                          ));
-                                    },
+                                    onTap: () async {},
                                     child: Text(
                                       valueOrDefault<String>(
                                         _model.locationPickerValue.name,
@@ -612,17 +573,8 @@ class _RequestFormWidgetState extends State<RequestFormWidget> {
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               140.0, 50.0, 140.0, 50.0),
                           child: FFButtonWidget(
-                            onPressed: () async {
-                              context.pushNamed(
-                                'ConfirmationPage',
-                                extra: <String, dynamic>{
-                                  kTransitionInfoKey: const TransitionInfo(
-                                    hasTransition: true,
-                                    transitionType:
-                                        PageTransitionType.topToBottom,
-                                  ),
-                                },
-                              );
+                            onPressed: () {
+                              print('Button pressed ...');
                             },
                             text: 'Submit',
                             options: FFButtonOptions(
