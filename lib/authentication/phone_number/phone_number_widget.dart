@@ -96,6 +96,7 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
     _model.numberController ??= TextEditingController();
     _model.numberFocusNode ??= FocusNode();
     _model.numberFocusNode!.addListener(() => setState(() {}));
+    authManager.handlePhoneAuthStateChanges(context);
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -449,42 +450,55 @@ class _PhoneNumberWidgetState extends State<PhoneNumberWidget>
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             20.0, 20.0, 20.0, 20.0),
-                        child: InkWell(
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onLongPress: () async {
-                            FFAppState().update(() {
+                        child: FFButtonWidget(
+                          onPressed: () async {
+                            setState(() {
                               FFAppState().MobileNumber =
-                                  '+91${_model.numberController.text}';
+                                  _model.numberController.text;
                             });
+                            final phoneNumberVal = FFAppState().MobileNumber;
+                            if (phoneNumberVal.isEmpty ||
+                                !phoneNumberVal.startsWith('+')) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Phone Number is required and has to start with +.'),
+                                ),
+                              );
+                              return;
+                            }
+                            await authManager.beginPhoneAuth(
+                              context: context,
+                              phoneNumber: phoneNumberVal,
+                              onCodeSent: (context) async {
+                                context.goNamedAuth(
+                                  'verify_otp',
+                                  context.mounted,
+                                  ignoreRedirect: true,
+                                );
+                              },
+                            );
                           },
-                          child: FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
-                            },
-                            text: 'Get OTP',
-                            options: FFButtonOptions(
-                              height: 40.0,
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24.0, 0.0, 24.0, 0.0),
-                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: const Color(0xFF0D6E09),
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    color: Colors.white,
-                                  ),
-                              elevation: 3.0,
-                              borderSide: const BorderSide(
-                                color: Colors.transparent,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(18.0),
+                          text: 'Get OTP',
+                          options: FFButtonOptions(
+                            height: 40.0,
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                24.0, 0.0, 24.0, 0.0),
+                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: const Color(0xFF0D6E09),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  color: Colors.white,
+                                ),
+                            elevation: 3.0,
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                              width: 1.0,
                             ),
+                            borderRadius: BorderRadius.circular(18.0),
                           ),
                         )
                             .animateOnPageLoad(
